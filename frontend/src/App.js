@@ -152,53 +152,53 @@ function App() {
                     </div>
 
                     {/* Data Table */}
-                    <div className="bg-white p-4 rounded-lg shadow-md w-full">
-                        <h3 className="text-lg font-semibold mb-4">Asset List</h3>
-                        <table className="w-full border-collapse border border-gray-300">
-                            <thead>
-                                <tr className="bg-gray-200">
-                                    <th className="border p-2">Protocol</th>
-                                    <th className="border p-2">IP Address</th>
-                                    <th className="border p-2">Vendor</th>
-                                    <th className="border p-2">Role</th>
-                                    <th className="border border-gray-300 px-4 py-2">Expand</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assets.map((asset, index) => (
-                                    <React.Fragment key={index}>
-                                        <tr className="hover:bg-gray-100 cursor-pointer">
-                                            <td className="border p-2">{asset.protocol}</td>
-                                            <td className="border p-2">{asset.ip}</td>
-                                            <td className="border p-2">{asset.vendor || "Unknown"}</td>
-                                            <td className="border p-2">{asset.role || "N/A"}</td>
-                                            <td 
-                                                className="border border-gray-300 px-4 py-2 text-center align-middle cursor-pointer" 
-                                                onClick={() => toggleExpand(index)}
-                                            >
-                                                <div className="flex justify-center items-center h-full">
-                                                    {expandedAsset === index ? <FaMinus /> : <FaPlus />}
-                                                </div>
-                                            </td>
-                                            {/* Expanded row showing CVE and CPE details */}
-                                            {expandedAsset === index && (
-                                                <tr className="bg-gray-50">
-                                                <td colSpan="5" className="p-4 border border-gray-300">
-                                                    <strong>CVEs:</strong> {asset.cves.length > 0 
-                                                        ? asset.cves.map((cve) => <span key={cve.id}>{cve.id}, </span>) 
-                                                        : "No CVEs found"}
-                                                    <br />
-                                                    <strong>CPEs:</strong> {asset.cpes.length > 0 
-                                                        ? asset.cpes.map((cpe) => <span key={cpe.cpe_name}>{cpe.cpe_name}, </span>) 
-                                                        : "No CPEs found"}
-                                                </td>
-                                            </tr>
-                                             )}
-                                        </tr>
-                                    </React.Fragment>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="w-full px-6">
+                        <h2 className="text-2xl font-semibold mb-6">Assets</h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {assets.map((asset, index) => (
+                                <div 
+                                    key={index} 
+                                    className="bg-white shadow-md rounded-lg p-4 relative"
+                                >
+                                    {/* Main Asset Info */}
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <h3 className="text-lg font-semibold">{asset.protocol}</h3>
+                                            <p className="text-sm text-gray-500">{asset.ip}</p>
+                                            <p className="text-sm text-gray-500">{asset.vendor}</p>
+                                            <p className="text-sm text-gray-500">{asset.role}</p>
+                                        </div>
+
+                                        {/* Expand/Collapse Button */}
+                                        <button 
+                                            onClick={() => toggleExpand(index)} 
+                                            className="text-gray-600 hover:text-black transition"
+                                        >
+                                            {expandedAsset === index ? <FaMinus size={18} /> : <FaPlus size={18} />}
+                                        </button>
+                                    </div>
+
+                                    {/* Expanded Section for CVE & CPE Details */}
+                                    {expandedAsset === index && (
+                                        <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+                                            <h4 className="text-sm font-semibold">CVE Details:</h4>
+                                            <p className="text-xs text-gray-700">
+                                                {asset.cves.length > 0 ? 
+                                                    asset.cves.map((cve) => <span key={cve.id}>{cve.id}, </span>) 
+                                                    : "No CVEs found"}
+                                            </p>
+                                            <h4 className="text-sm font-semibold mt-2">CPE Details:</h4>
+                                            <p className="text-xs text-gray-700">
+                                                {asset.cpes.length > 0 ? 
+                                                    asset.cpes.map((cpe) => <span key={cpe.cpe_name}>{cpe.cpe_name}, </span>) 
+                                                    : "No CPEs found"}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Clear Results Button */}
