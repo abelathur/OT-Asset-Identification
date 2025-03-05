@@ -190,18 +190,26 @@ function App() {
                                     {/* Expanded Section for CVE & CPE Details */}
                                     {expandedAssets.has(index) && (
                                         <div className="mt-4 p-3 bg-gray-100 rounded-lg">
-                                            <h4 className="text-sm font-semibold">CVE Details:</h4>
-                                            <p className="text-xs text-gray-700">
-                                                {asset.cves.length > 0 ? 
-                                                    asset.cves.map((cve) => <span key={cve.id}>{cve.id}, </span>) 
-                                                    : "No CVEs found"}
-                                            </p>
-                                            <h4 className="text-sm font-semibold mt-2">CPE Details:</h4>
-                                            <p className="text-xs text-gray-700">
-                                                {asset.cpes.length > 0 ? 
-                                                    asset.cpes.map((cpe) => <span key={cpe.cpe_name}>{cpe.cpe_name}, </span>) 
-                                                    : "No CPEs found"}
-                                            </p>
+                                            <h4 className="text-sm font-semibold">CVEs associated with {asset.vendor}:</h4>
+                                            {asset.cves.length > 0 ? (
+                                                <ul className="text-xs text-gray-700">
+                                                    {asset.cves.map((cve) => (
+                                                        <li key={cve.id}> {cve.id} </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="text-xs text-gray-700">No CVEs found</p>
+                                            )}
+                                            <h4 className="text-sm font-semibold mt-2">CPEs associated with {asset.vendor}:</h4>
+                                            {asset.cpes.length > 0 ? (
+                                                <ul className="text-xs text-gray-700">
+                                                    {asset.cpes.map((cpe) => (
+                                                        <li key={cpe.cpe_name}>{cpe.cpe_name}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="text-xs text-gray-700">No CPEs found</p>
+                                            )}
                                         </div>
                                     )}
                                 </div>
