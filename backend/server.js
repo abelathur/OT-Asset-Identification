@@ -14,7 +14,8 @@ app.use(express.json());
 
 const protocolParsers = [
     "modbusParser.py",
-    "dnp3Parser.py"
+    "dnp3Parser.py",
+    "iec104Parser.py"
 ];
 
 app.post("/upload", upload.single("pcap"), async (req, res) => {
