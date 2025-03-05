@@ -17,10 +17,18 @@ function App() {
     const [dataUploaded, setDataUploaded] = useState(false);  // Track if a file has been uploaded
     const [protocolData, setProtocolData] = useState([]);
     const [vendorData, setVendorData] = useState([]);
-    const [expandedAsset, setExpandedAsset] = useState(null);
+    const [expandedAssets, setExpandedAssets] = useState(new Set());
 
     const toggleExpand = (index) => {
-        setExpandedAsset(expandedAsset === index ? null : index);
+        setExpandedAssets((prevExpanded) => {
+            const newExpanded = new Set(prevExpanded);
+            if (newExpanded.has(index)) {
+                newExpanded.delete(index); // Collapse if already expanded
+            } else {
+                newExpanded.add(index); // Expand new asset
+            }
+            return newExpanded;
+        });
     };
 
     const handleUpload = async () => {
@@ -164,10 +172,10 @@ function App() {
                                     {/* Main Asset Info */}
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <h3 className="text-lg font-semibold">{asset.protocol}</h3>
-                                            <p className="text-sm text-gray-500">{asset.ip}</p>
-                                            <p className="text-sm text-gray-500">{asset.vendor}</p>
-                                            <p className="text-sm text-gray-500">{asset.role}</p>
+                                            <h3 className="text-lg font-semibold">{asset.ip}</h3>
+                                            <p className="text-sm text-gray-500">Protocol: {asset.protocol}</p>
+                                            <p className="text-sm text-gray-500">Vendor: {asset.vendor}</p>
+                                            <p className="text-sm text-gray-500">Role: {asset.role}</p>
                                         </div>
 
                                         {/* Expand/Collapse Button */}
@@ -175,12 +183,12 @@ function App() {
                                             onClick={() => toggleExpand(index)} 
                                             className="text-gray-600 hover:text-black transition"
                                         >
-                                            {expandedAsset === index ? <FaMinus size={18} /> : <FaPlus size={18} />}
+                                            {expandedAssets.has(index) ? <FaMinus size={18} /> : <FaPlus size={18} />}
                                         </button>
                                     </div>
 
                                     {/* Expanded Section for CVE & CPE Details */}
-                                    {expandedAsset === index && (
+                                    {expandedAssets.has(index) && (
                                         <div className="mt-4 p-3 bg-gray-100 rounded-lg">
                                             <h4 className="text-sm font-semibold">CVE Details:</h4>
                                             <p className="text-xs text-gray-700">
